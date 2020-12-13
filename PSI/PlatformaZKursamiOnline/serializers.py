@@ -2,27 +2,27 @@ from rest_framework import serializers
 from .models import *
 
 
-class UzytkownikSerializer(serializers.Serializer):
-    imie = serializers.CharField(max_length=45, null=False)
-    nazwisko = serializers.CharField(max_length=45, null=False)
-    nick = models.CharField(max_length=256, null=False)
-    email = serializers.EmailField(max_length=45, null=False)
-    haslo = serializers.CharField(max_length=45, null=False)
+class UzytkownikSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Uzytkownik
+        fields = ['imie', 'nazwisko', 'nick', 'email', 'haslo']
 
 
-class InstruktorSerializer(serializers.Serializer):
-    imie = serializers.CharField(max_length=45, null=False)
-    nazwisko = serializers.CharField(max_length=45, null=False)
-    biografia = models.CharField(max_length=256, null=False)
-    email = serializers.EmailField(max_length=45, null=False)
-    haslo = serializers.CharField(max_length=45, null=False)
+class InstruktorSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Instruktor
+        fields = ['imie', 'nazwisko', 'biografia', 'email', 'haslo']
 
 
-class KursSerializer(serializers.Serializer):
-    nazwa = serializers.CharField(max_length=45, null=False)
-    opis = serializers.CharField(max_length=45, null=False)
-    cena = serializers.DecimalField(null=False, max_digits=5, decimal_places=2)
-    idInstruktora = serializers.PrimaryKeyRelatedField(many=False)
+class KursSerializer(serializers.ModelSerializer):
+    # nazwa = serializers.CharField(max_length=45)
+    # opis = serializers.CharField(max_length=256)
+    # cena = serializers.DecimalField(max_digits=5, decimal_places=2)
+    # idInstruktora = serializers.PrimaryKeyRelatedField(many=False)
+
+    class Meta:
+        model = Kurs
+        fields = ['nazwa', 'opis', 'cena', 'idInstruktora']
 
     def validate_cena(self, value):
         if not isinstance(value, int):
@@ -39,10 +39,10 @@ class LekcjaSerializer(serializers.ModelSerializer):
         fields = ['nazwa', 'opis', 'idKursu', 'idInstruktora']
 
 
-class ZasobSerializer(serializers.Serializer):
-    nazwa = serializers.CharField(max_length=45, null=False)
-    url = serializers.URLField(max_length=45, null=False)
-    idLekcji = serializers.PrimaryKeyRelatedField()
+class ZasobSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Zasob
+        fields = ['nazwa', 'url', 'idLekcji']
 
 
 class PlatnoscSerializer(serializers.ModelSerializer):
