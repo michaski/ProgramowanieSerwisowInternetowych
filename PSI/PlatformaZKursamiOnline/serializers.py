@@ -2,27 +2,37 @@ from rest_framework import serializers
 from .models import *
 
 
-class UzytkownikSerializer(serializers.ModelSerializer):
+class UzytkownikSerializer(serializers.HyperlinkedModelSerializer):
+    kupione_kursy = serializers.HyperlinkedRelatedField(view_name='kurs-detail', read_only=True, many=True)
+
     class Meta:
         model = Uzytkownik
-        fields = ['imie', 'nazwisko', 'nick', 'email', 'haslo']
+        fields = ['id', 'url', 'imie', 'nazwisko', 'nick', 'email', 'haslo', 'kupione_kursy']
 
 
-class InstruktorSerializer(serializers.ModelSerializer):
+class InstruktorSerializer(serializers.HyperlinkedModelSerializer):
+    kursy = serializers.HyperlinkedRelatedField(view_name='kurs-detail', read_only=True, many=True)
+
     class Meta:
         model = Instruktor
-        fields = ['imie', 'nazwisko', 'biografia', 'email', 'haslo']
+        fields = ['id', 'url', 'imie', 'nazwisko', 'biografia', 'email', 'haslo', 'kursy']
 
 
-class KursSerializer(serializers.ModelSerializer):
+class KursSerializer(serializers.HyperlinkedModelSerializer):
     # nazwa = serializers.CharField(max_length=45)
     # opis = serializers.CharField(max_length=256)
     # cena = serializers.DecimalField(max_digits=5, decimal_places=2)
     # idInstruktora = serializers.PrimaryKeyRelatedField(many=False)
 
+    lekcje = serializers.HyperlinkedRelatedField(view_name='lekcja-detail', read_only=True, many=True)
+
+    # idInstruktora = serializers.SlugRelatedField(queryset=Instruktor.objects.all(), many=False, slug_field='imie')
+
+    # lekcje = serializers.SlugRelatedField(queryset=Lekcja.objects.all(), many=True, slug_field='nazwa')
+
     class Meta:
         model = Kurs
-        fields = ['nazwa', 'opis', 'cena', 'idInstruktora']
+        fields = ['id', 'url', 'nazwa', 'opis', 'cena', 'idInstruktora', 'lekcje']
 
     def validate_cena(self, value):
         if not isinstance(value, int):
@@ -33,19 +43,21 @@ class KursSerializer(serializers.ModelSerializer):
             raise serializers.ValidationError('Cena nie może być ujemna')
 
 
-class LekcjaSerializer(serializers.ModelSerializer):
+class LekcjaSerializer(serializers.HyperlinkedModelSerializer):
+    zasoby = serializers.HyperlinkedRelatedField(view_name='zasob-list', read_only=True, many=True)
+
     class Meta:
         model = Lekcja
-        fields = ['nazwa', 'opis', 'idKursu', 'idInstruktora']
+        fields = ['id', 'url', 'nazwa', 'opis', 'idKursu', 'idInstruktora', 'zasoby']
 
 
 class ZasobSerializer(serializers.ModelSerializer):
     class Meta:
         model = Zasob
-        fields = ['nazwa', 'url', 'idLekcji']
+        fields = ['id', 'url', 'nazwa', 'url', 'idLekcji']
 
 
 class PlatnoscSerializer(serializers.ModelSerializer):
     class Meta:
         model = Platnosc
-        fields = ['idUzytkownika', 'idKursu']
+        fields = ['id', 'idUzytkownika', 'idKursu']

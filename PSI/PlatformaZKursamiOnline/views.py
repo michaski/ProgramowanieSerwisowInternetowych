@@ -11,61 +11,61 @@ from .serializers import *
 
 
 class KursListView(generics.ListCreateAPIView):
-    name = 'lista-kursow'
+    name = 'kurs-list'
     queryset = Kurs.objects.all()
     serializer_class = KursSerializer
 
 
 class KursDetailView(generics.RetrieveUpdateDestroyAPIView):
-    name = 'informacje_o_kursie'
+    name = 'kurs-detail'
     queryset = Kurs.objects.all()
     serializer_class = KursSerializer
 
 
 class LekcjaListView(generics.ListCreateAPIView):
-    name = 'lista_lekcji'
+    name = 'lekcja-list'
     queryset = Lekcja.objects.all()
     serializer_class = LekcjaSerializer
 
 
 class LekcjaDetailView(generics.RetrieveUpdateDestroyAPIView):
-    name = 'informacje_o_lekcji'
+    name = 'lekcja-detail'
     queryset = Lekcja.objects.all()
     serializer_class = LekcjaSerializer
 
 
 class ZasobListView(generics.ListAPIView):
-    name = 'lista_zasobow'
+    name = 'zasob-list'
     queryset = Zasob.objects.all()
     serializer_class = ZasobSerializer
 
 
 class PlatnoscListView(generics.ListCreateAPIView):
-    name = 'lista_platnosci'
+    name = 'platnosc-list'
     queryset = Platnosc.objects.all()
     serializer_class = PlatnoscSerializer
 
 
 class InstruktorListView(generics.ListCreateAPIView):
-    name = 'lista_instuktorow'
+    name = 'instruktor-list'
     queryset = Instruktor.objects.all()
     serializer_class = InstruktorSerializer
 
 
 class InstruktorDetailView(generics.RetrieveUpdateDestroyAPIView):
-    name = 'informacje_o_instruktorze'
+    name = 'instruktor-detail'
     queryset = Instruktor.objects.all()
     serializer_class = InstruktorSerializer
 
 
 class UzytkownikListView(generics.ListCreateAPIView):
-    name = 'lista_uzytkownikow'
+    name = 'uzytkownik-list'
     queryset = Uzytkownik.objects.all()
     serializer_class = UzytkownikSerializer
 
 
 class UzytkownikDetailView(generics.RetrieveUpdateDestroyAPIView):
-    name = 'informacje_o_uzytkowniku'
+    name = 'uzytkownik-detail'
     queryset = Uzytkownik.objects.all()
     serializer_class = UzytkownikSerializer
 

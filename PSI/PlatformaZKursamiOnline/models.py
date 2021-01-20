@@ -10,6 +10,9 @@ class Uzytkownik(models.Model):
     email = models.CharField(max_length=45, null=False)
     haslo = models.CharField(max_length=45, null=False)
 
+    def __str__(self):
+        return " ".join((self.imie, self.nazwisko))
+
 
 class Instruktor(models.Model):
     imie = models.CharField(max_length=45, null=False)
@@ -18,27 +21,39 @@ class Instruktor(models.Model):
     email = models.CharField(max_length=45, null=False)
     haslo = models.CharField(max_length=45, null=False)
 
+    def __str__(self):
+        return " ".join((self.imie, self.nazwisko))
+
 
 class Kurs(models.Model):
     nazwa = models.CharField(max_length=45, null=False)
     opis = models.CharField(max_length=256, null=False)
     cena = models.DecimalField(null=False, max_digits=5, decimal_places=2)
-    idInstruktora = models.ForeignKey(Instruktor, models.SET_DEFAULT, default=1)
+    idInstruktora = models.ForeignKey(Instruktor, models.SET_DEFAULT, default=1, related_name='kursy')
+
+    def __str__(self):
+        return self.nazwa
 
 
 class Lekcja(models.Model):
     nazwa = models.CharField(max_length=45, null=False)
     opis = models.CharField(max_length=256, null=False)
-    idKursu = models.ForeignKey(Kurs, on_delete=models.CASCADE)
+    idKursu = models.ForeignKey(Kurs, on_delete=models.CASCADE, related_name='lekcje')
     idInstruktora = models.ForeignKey(Instruktor, models.SET_DEFAULT, default=1)
+
+    def __str__(self):
+        return ".".join((self.idKursu, self.nazwa))
 
 
 class Zasob(models.Model):
     nazwa = models.CharField(max_length=45, null=False)
     url = models.CharField(max_length=256, null=False)
-    idLekcji = models.ForeignKey(Lekcja, on_delete=models.CASCADE)
+    idLekcji = models.ForeignKey(Lekcja, on_delete=models.CASCADE, related_name='zasoby')
+
+    def __str__(self):
+        return self.nazwa
 
 
 class Platnosc(models.Model):
-    idUzytkownika = models.ForeignKey(Uzytkownik, on_delete=models.CASCADE)
+    idUzytkownika = models.ForeignKey(Uzytkownik, on_delete=models.CASCADE, related_name='kupione_kursy')
     idKursu = models.ForeignKey(Kurs, on_delete=models.CASCADE)
