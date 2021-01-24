@@ -34,8 +34,14 @@ class LekcjaDetailView(generics.RetrieveUpdateDestroyAPIView):
     serializer_class = LekcjaSerializer
 
 
-class ZasobListView(generics.ListAPIView):
+class ZasobListView(generics.ListCreateAPIView):
     name = 'zasob-list'
+    queryset = Zasob.objects.all()
+    serializer_class = ZasobSerializer
+
+
+class ZasobDetailView(generics.RetrieveAPIView):
+    name = 'zasob-detail'
     queryset = Zasob.objects.all()
     serializer_class = ZasobSerializer
 
@@ -79,5 +85,7 @@ class ApiRoot(generics.GenericAPIView):
             'instruktorzy': reverse(InstruktorListView.name, request=request),
             'uzytkownicy': reverse(UzytkownikListView.name, request=request),
             'platnosci': reverse(PlatnoscListView.name, request=request),
+            'lekcje': reverse(LekcjaListView.name, request=request),
+            'zasoby': reverse(ZasobListView.name, request=request),
         }
         return Response(data)
