@@ -3,10 +3,10 @@ from .models import *
 
 
 class UzytkownikSerializer(serializers.HyperlinkedModelSerializer):
-     kupione_kursy = serializers.HyperlinkedRelatedField(view_name='kurs-detail', read_only=True, many=True)
-     # kupione_kursy = serializers.SlugRelatedField(queryset=Platnosc.objects.all(), many=True, slug_field='idKursu')
+    kupione_kursy = serializers.HyperlinkedRelatedField(view_name='kurs-detail', read_only=True, many=True)
+    # kupione_kursy = serializers.SlugRelatedField(queryset=Platnosc.objects.all(), many=True, slug_field='idKursu')
 
-     class Meta:
+    class Meta:
         model = Uzytkownik
         fields = ['id', 'url', 'imie', 'nazwisko', 'nick', 'email', 'haslo', 'kupione_kursy']
 
