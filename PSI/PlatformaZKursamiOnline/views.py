@@ -7,18 +7,32 @@ from rest_framework.reverse import reverse
 from .models import *
 from .serializers import *
 from rest_framework.permissions import DjangoModelPermissionsOrAnonReadOnly
+from django_filters import AllValuesFilter, NumberFilter, FilterSet
 
 # Create your views here.
+
+
+class CenaFilter(FilterSet):
+    cena_od = NumberFilter(field_name='cena', lookup_expr='gte')
+    cena_do = NumberFilter(field_name='cena', lookup_expr='lte')
+    idInstruktora = AllValuesFilter(field_name='idInstruktora__imie')
+
+    class Meta:
+        model = Kurs
+        fields = ['cena_od', 'cena_do', 'idInstruktora']
 
 
 class KursListView(generics.ListCreateAPIView):
     name = 'kurs-list'
     queryset = Kurs.objects.all()
     serializer_class = KursSerializer
-    filter_fields = ['idInstruktora']
+    filter_class = CenaFilter
     search_fields = ['nazwa', 'idInstruktora']
     ordering_fields = ['nazwa', 'cena', 'idInstruktora']
     permission_classes = [DjangoModelPermissionsOrAnonReadOnly]
+
+    # def perform_create(self, serializer):
+    #     serializer.save(idInstruktora=self.request.user)
 
 
 class KursDetailView(generics.RetrieveUpdateDestroyAPIView):
