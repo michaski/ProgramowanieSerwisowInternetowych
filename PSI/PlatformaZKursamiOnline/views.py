@@ -14,6 +14,9 @@ class KursListView(generics.ListCreateAPIView):
     name = 'kurs-list'
     queryset = Kurs.objects.all()
     serializer_class = KursSerializer
+    filter_fields = ['idInstruktora']
+    search_fields = ['nazwa', 'idInstruktora']
+    ordering_fields = ['nazwa', 'cena', 'idInstruktora']
 
 
 class KursDetailView(generics.RetrieveUpdateDestroyAPIView):
@@ -26,6 +29,9 @@ class LekcjaListView(generics.ListCreateAPIView):
     name = 'lekcja-list'
     queryset = Lekcja.objects.all()
     serializer_class = LekcjaSerializer
+    filter_fields = ['idKursu']
+    search_fields = ['nazwa', 'idKursu']
+    ordering_fields = ['idKursu', 'id', 'nazwa']
 
 
 class LekcjaDetailView(generics.RetrieveUpdateDestroyAPIView):
@@ -38,6 +44,9 @@ class ZasobListView(generics.ListCreateAPIView):
     name = 'zasob-list'
     queryset = Zasob.objects.all()
     serializer_class = ZasobSerializer
+    filter_fields = ['idLekcji']
+    search_fields = ['nazwa', 'idLekcji']
+    ordering_fields = ['idLekcji', 'id', 'nazwa']
 
 
 class ZasobDetailView(generics.RetrieveAPIView):
@@ -50,12 +59,18 @@ class PlatnoscListView(generics.ListCreateAPIView):
     name = 'platnosc-list'
     queryset = Platnosc.objects.all()
     serializer_class = PlatnoscSerializer
+    filter_fields = ['idKursu', 'idUzytkownika']
+    search_fields = ['idUzytkownika', 'idKursu']
+    ordering_fields = ['idKursu', 'idUzytkownika']
 
 
 class InstruktorListView(generics.ListCreateAPIView):
     name = 'instruktor-list'
     queryset = Instruktor.objects.all()
     serializer_class = InstruktorSerializer
+    filter_fields = []
+    search_fields = ['imie', 'nazwisko', 'idKursu']
+    ordering_fields = ['nazwisko', 'imie']
 
 
 class InstruktorDetailView(generics.RetrieveUpdateDestroyAPIView):
@@ -68,6 +83,9 @@ class UzytkownikListView(generics.ListCreateAPIView):
     name = 'uzytkownik-list'
     queryset = Uzytkownik.objects.all()
     serializer_class = UzytkownikSerializer
+    filter_fields = []
+    search_fields = ['imie', 'nazwisko']
+    ordering_fields = ['nazwisko', 'imie']
 
 
 class UzytkownikDetailView(generics.RetrieveUpdateDestroyAPIView):

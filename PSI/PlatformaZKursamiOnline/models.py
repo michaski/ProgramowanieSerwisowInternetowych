@@ -39,7 +39,7 @@ class Kurs(models.Model):
     idInstruktora = models.ForeignKey(Instruktor, models.SET_DEFAULT, default=1, related_name='kursy')
 
     class Meta:
-        ordering = ('nazwa', )
+        ordering = ('nazwa', 'cena', 'idInstruktora')
 
     def __str__(self):
         return self.nazwa
@@ -52,7 +52,7 @@ class Lekcja(models.Model):
     idInstruktora = models.ForeignKey(Instruktor, models.SET_DEFAULT, default=1)
 
     class Meta:
-        ordering = ('idKursu', )
+        ordering = ('idKursu', 'id', 'nazwa')
 
     def __str__(self):
         return "->".join((self.idKursu.__str__(), self.nazwa))
@@ -64,7 +64,7 @@ class Zasob(models.Model):
     idLekcji = models.ForeignKey(Lekcja, on_delete=models.CASCADE, related_name='zasoby')
 
     class Meta:
-        ordering = ('idLekcji', )
+        ordering = ('idLekcji', 'id', 'nazwa')
 
     def __str__(self):
         return self.nazwa
@@ -73,3 +73,6 @@ class Zasob(models.Model):
 class Platnosc(models.Model):
     idUzytkownika = models.ForeignKey(Uzytkownik, on_delete=models.CASCADE, related_name='kupione_kursy')
     idKursu = models.ForeignKey(Kurs, on_delete=models.CASCADE)
+
+    class Meta:
+        ordering = ('idKursu', 'idUzytkownika')
