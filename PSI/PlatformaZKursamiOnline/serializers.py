@@ -4,11 +4,10 @@ from .models import *
 
 class UzytkownikSerializer(serializers.HyperlinkedModelSerializer):
     kupione_kursy = serializers.HyperlinkedRelatedField(view_name='kurs-detail', read_only=True, many=True)
-    # kupione_kursy = serializers.SlugRelatedField(queryset=Platnosc.objects.all(), many=True, slug_field='idKursu')
 
     class Meta:
         model = Uzytkownik
-        fields = ['id', 'url', 'imie', 'nazwisko', 'nick', 'email', 'haslo', 'kupione_kursy']
+        fields = ['id', 'url', 'imie', 'nazwisko', 'nick', 'email', 'slug', 'kupione_kursy']
 
 
 class InstruktorSerializer(serializers.HyperlinkedModelSerializer):
@@ -18,18 +17,12 @@ class InstruktorSerializer(serializers.HyperlinkedModelSerializer):
 
     class Meta:
         model = Instruktor
-        fields = ['id', 'url', 'imie', 'nazwisko', 'biografia', 'email', 'haslo', 'kursy']
+        fields = ['id', 'url', 'imie', 'nazwisko', 'biografia', 'email', 'nick', 'slug', 'kursy']
 
 
 class KursSerializer(serializers.HyperlinkedModelSerializer):
-    # nazwa = serializers.CharField(max_length=45)
-    # opis = serializers.CharField(max_length=256)
-    # cena = serializers.DecimalField(max_digits=5, decimal_places=2)
-    # idInstruktora = serializers.PrimaryKeyRelatedField(many=False)
 
-    # lekcje = serializers.HyperlinkedRelatedField(view_name='lekcja-detail', read_only=True, many=True)
-
-    idInstruktora = serializers.SlugRelatedField(queryset=Instruktor.objects.all(), many=False, slug_field='imie')
+    idInstruktora = serializers.SlugRelatedField(queryset=Instruktor.objects.all(), many=False, slug_field='slug')
 
     lekcje = serializers.SlugRelatedField(queryset=Lekcja.objects.all(), many=True, slug_field='nazwa')
 
@@ -48,19 +41,12 @@ class KursSerializer(serializers.HyperlinkedModelSerializer):
         else:
             raise serializers.ValidationError('Cena nie może być ujemna')
 
-        # if not isinstance(value, int):
-        #     raise serializers.ValidationError('Błędna wartość pola cena')
-        # if value > 0:
-        #     return value
-        # else:
-        #     raise serializers.ValidationError('Cena nie może być ujemna')
-
 
 class LekcjaSerializer(serializers.HyperlinkedModelSerializer):
     # zasoby = serializers.HyperlinkedRelatedField(view_name='zasob-detail', read_only=True, many=True)
     zasoby = serializers.SlugRelatedField(queryset=Zasob.objects.all(), many=True, slug_field='nazwa')
     idKursu = serializers.SlugRelatedField(queryset=Kurs.objects.all(), many=False, slug_field='nazwa')
-    idInstruktora = serializers.SlugRelatedField(queryset=Instruktor.objects.all(), many=False, slug_field='imie')
+    idInstruktora = serializers.SlugRelatedField(queryset=Instruktor.objects.all(), many=False, slug_field='slug')
 
     class Meta:
         model = Lekcja
@@ -77,7 +63,7 @@ class ZasobSerializer(serializers.ModelSerializer):
 
 class PlatnoscSerializer(serializers.ModelSerializer):
     idKursu = serializers.SlugRelatedField(queryset=Kurs.objects.all(), many=False, slug_field='nazwa')
-    idUzytkownika = serializers.SlugRelatedField(queryset=Uzytkownik.objects.all(), many=False, slug_field='imie')
+    idUzytkownika = serializers.SlugRelatedField(queryset=Uzytkownik.objects.all(), many=False, slug_field='slug')
 
     class Meta:
         model = Platnosc

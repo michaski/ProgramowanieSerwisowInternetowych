@@ -31,9 +31,6 @@ class KursListView(generics.ListCreateAPIView):
     ordering_fields = ['nazwa', 'cena', 'idInstruktora']
     permission_classes = [DjangoModelPermissionsOrAnonReadOnly]
 
-    # def perform_create(self, serializer):
-    #     serializer.save(idInstruktora=self.request.user)
-
 
 class KursDetailView(generics.RetrieveUpdateDestroyAPIView):
     name = 'kurs-detail'

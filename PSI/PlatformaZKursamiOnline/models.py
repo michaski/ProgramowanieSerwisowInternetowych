@@ -1,4 +1,5 @@
 from django.db import models
+from django.contrib.auth.models import User
 
 # Create your models here.
 
@@ -8,13 +9,13 @@ class Uzytkownik(models.Model):
     nazwisko = models.CharField(max_length=45, null=False)
     nick = models.CharField(max_length=45, null=False)
     email = models.CharField(max_length=45, null=False)
-    haslo = models.CharField(max_length=45, null=False)
+    slug = models.SlugField(max_length=90)
 
     class Meta:
-        ordering = ('nazwisko', 'imie')
+        ordering = ('nazwisko', 'imie', 'slug')
 
     def __str__(self):
-        return " ".join((self.imie, self.nazwisko))
+        return self.slug
 
 
 class Instruktor(models.Model):
@@ -22,13 +23,14 @@ class Instruktor(models.Model):
     nazwisko = models.CharField(max_length=45, null=False)
     biografia = models.CharField(max_length=256, null=False)
     email = models.CharField(max_length=45, null=False)
-    haslo = models.CharField(max_length=45, null=False)
+    nick = models.CharField(max_length=45, null=False)
+    slug = models.SlugField(max_length=90)
 
     class Meta:
-        ordering = ('nazwisko', 'imie')
+        ordering = ('nazwisko', 'imie', 'slug')
 
     def __str__(self):
-        return " ".join((self.imie, self.nazwisko))
+        return self.slug
 
 
 class Kurs(models.Model):
