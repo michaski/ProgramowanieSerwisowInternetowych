@@ -25,7 +25,6 @@ class Instruktor(models.Model):
     email = models.CharField(max_length=45, null=False)
     nick = models.CharField(max_length=45, null=False)
     slug = models.SlugField(max_length=90)
-    auth = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
 
     class Meta:
         ordering = ('nazwisko', 'imie', 'slug')
