@@ -15,7 +15,7 @@ from django_filters import AllValuesFilter, NumberFilter, FilterSet
 class CenaFilter(FilterSet):
     cena_od = NumberFilter(field_name='cena', lookup_expr='gte')
     cena_do = NumberFilter(field_name='cena', lookup_expr='lte')
-    idInstruktora = AllValuesFilter(field_name='idInstruktora__imie')
+    idInstruktora = AllValuesFilter(field_name='idInstruktora__slug')
 
     class Meta:
         model = Kurs
@@ -26,17 +26,17 @@ class KursListView(generics.ListCreateAPIView):
     name = 'kurs-list'
     queryset = Kurs.objects.all()
     serializer_class = KursSerializer
-    filter_class = CenaFilter
+    filterset_class = CenaFilter
     search_fields = ['nazwa', 'idInstruktora']
     ordering_fields = ['nazwa', 'cena', 'idInstruktora']
-    permission_classes = [DjangoModelPermissionsOrAnonReadOnly]
+    # permission_classes = [DjangoModelPermissionsOrAnonReadOnly]
 
 
 class KursDetailView(generics.RetrieveUpdateDestroyAPIView):
     name = 'kurs-detail'
     queryset = Kurs.objects.all()
     serializer_class = KursSerializer
-    permission_classes = [DjangoModelPermissionsOrAnonReadOnly]
+    # permission_classes = [DjangoModelPermissionsOrAnonReadOnly]
 
 
 class LekcjaListView(generics.ListCreateAPIView):
@@ -46,14 +46,14 @@ class LekcjaListView(generics.ListCreateAPIView):
     filter_fields = ['idKursu']
     search_fields = ['nazwa', 'idKursu']
     ordering_fields = ['idKursu', 'id', 'nazwa']
-    permission_classes = [DjangoModelPermissionsOrAnonReadOnly]
+    # permission_classes = [DjangoModelPermissionsOrAnonReadOnly]
 
 
 class LekcjaDetailView(generics.RetrieveUpdateDestroyAPIView):
     name = 'lekcja-detail'
     queryset = Lekcja.objects.all()
     serializer_class = LekcjaSerializer
-    permission_classes = [DjangoModelPermissionsOrAnonReadOnly]
+    # permission_classes = [DjangoModelPermissionsOrAnonReadOnly]
 
 
 class ZasobListView(generics.ListCreateAPIView):
@@ -83,38 +83,38 @@ class PlatnoscListView(generics.ListCreateAPIView):
     permission_classes = [DjangoModelPermissionsOrAnonReadOnly]
 
 
-class InstruktorListView(generics.ListAPIView):
+class InstruktorListView(generics.ListCreateAPIView):
     name = 'instruktor-list'
     queryset = Instruktor.objects.all()
     serializer_class = InstruktorSerializer
     filter_fields = []
     search_fields = ['imie', 'nazwisko', 'idKursu']
     ordering_fields = ['nazwisko', 'imie']
-    permission_classes = [DjangoModelPermissionsOrAnonReadOnly]
+    # permission_classes = [DjangoModelPermissionsOrAnonReadOnly]
 
 
 class InstruktorDetailView(generics.RetrieveAPIView):
     name = 'instruktor-detail'
     queryset = Instruktor.objects.all()
     serializer_class = InstruktorSerializer
-    permission_classes = [DjangoModelPermissionsOrAnonReadOnly]
+    # permission_classes = [DjangoModelPermissionsOrAnonReadOnly]
 
 
-class UzytkownikListView(generics.ListAPIView):
+class UzytkownikListView(generics.ListCreateAPIView):
     name = 'uzytkownik-list'
     queryset = Uzytkownik.objects.all()
     serializer_class = UzytkownikSerializer
     filter_fields = []
     search_fields = ['imie', 'nazwisko']
     ordering_fields = ['nazwisko', 'imie']
-    permission_classes = [DjangoModelPermissionsOrAnonReadOnly]
+    # permission_classes = [DjangoModelPermissionsOrAnonReadOnly]
 
 
 class UzytkownikDetailView(generics.RetrieveAPIView):
     name = 'uzytkownik-detail'
     queryset = Uzytkownik.objects.all()
     serializer_class = UzytkownikSerializer
-    permission_classes = [DjangoModelPermissionsOrAnonReadOnly]
+    # permission_classes = [DjangoModelPermissionsOrAnonReadOnly]
 
 
 class ApiRoot(generics.GenericAPIView):
